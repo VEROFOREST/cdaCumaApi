@@ -13,8 +13,14 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
- * @ApiResource
+ *@ApiResource(attributes= {"security" : "is_granted('ROLE_USER')"},
+ *              collectionOperations= {"get",    
+ *                                     "post" : {"security" : "is_granted('ROLE_ADMIN')"}},
+ *               itemOperations= {"get", 
+ *                                "put" : {"security" : "is_granted('ROLE_USER')"}}
+ *)
  */
+
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     /**
@@ -138,7 +144,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        // $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
     }

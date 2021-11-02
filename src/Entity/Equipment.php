@@ -10,7 +10,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass=EquipmentRepository::class)
- * @ApiResource
+ * @ApiResource(attributes= {"security" : "is_granted('ROLE_USER')"},
+ *              collectionOperations= {"get",    
+ *                                     "post" : {"security" : "is_granted('ROLE_ADMIN')"}},
+ *              itemOperations= {"get", 
+ *                               "put" : {"security" : "is_granted('ROLE_ADMIN')"}}
+ * )
  */
 class Equipment
 {
