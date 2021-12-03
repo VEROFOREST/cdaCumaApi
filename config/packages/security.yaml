@@ -50,12 +50,12 @@ security:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
+        - { path: ^/api/login_check, roles: PUBLIC_ACCESS }
         # - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/api/equipments, roles: IS_AUTHENTICATED_FULLY }
-        - { path: ^/api/shares,  roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/shares,  roles: PUBLIC_ACCESS }
         - { path: ^/api/rentaltypes,  roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/api/reservations,  roles: IS_AUTHENTICATED_FULLY }    
-        - { path: ^/api/users, roles: IS_AUTHENTICATED_FULLY, methods: [ PUT, DELETE] }
-        
+        - { path: ^/api/users, roles:  IS_AUTHENTICATED_FULLY}
         
         
