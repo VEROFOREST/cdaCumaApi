@@ -7,14 +7,16 @@ use App\Repository\EquipmentRepository;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=EquipmentRepository::class)
- * @ApiResource(attributes= {"security" : "is_granted('ROLE_USER')"},
- *              collectionOperations= {"get",    
- *                                     "post" : {"security" : "is_granted('ROLE_ADMIN')"}},
- *              itemOperations= {"get", 
- *                               "put" : {"security" : "is_granted('ROLE_ADMIN')"}}
+ *  @ApiResource(collectionOperations={
+ *         "post",
+ *         "get"={
+ *             "normalization_context"={"groups"={"equipment:read"}}
+ *         }
+ *     }
  * )
  */
 class Equipment
@@ -23,11 +25,13 @@ class Equipment
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     *  @Groups({"equipment:read","reservation:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"equipment:read","reservation:read"})
      */
     private $name;
 
@@ -63,11 +67,13 @@ class Equipment
 
     /**
      * @ORM\OneToMany(targetEntity=Reservation::class, mappedBy="equipment")
+     * @Groups({"equipment:read"})
      */
     private $reservations;
 
     /**
      * @ORM\OneToMany(targetEntity=Share::class, mappedBy="equipment")
+     * * @Groups({"equipment:read"})
      */
     private $shares;
 

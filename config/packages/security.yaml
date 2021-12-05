@@ -52,8 +52,8 @@ security:
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
         - { path: ^/api/login_check, roles: PUBLIC_ACCESS }
         # - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
-        - { path: ^/api/equipments, roles: IS_AUTHENTICATED_FULLY }
-        - { path: ^/api/shares,  roles: PUBLIC_ACCESS }
+        - { path: ^/api/equipment, roles: IS_AUTHENTICATED_FULLY  }
+        - { path: ^/api/shares,  roles: IS_AUTHENTICATED_FULLY  }
         - { path: ^/api/rentaltypes,  roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/api/reservations,  roles: IS_AUTHENTICATED_FULLY }    
         - { path: ^/api/users, roles:  IS_AUTHENTICATED_FULLY}

@@ -41,6 +41,7 @@ class Share
 
     /**
      * @ORM\Column(type="datetime_immutable")
+     * @Groups({"share:read","user:read"})
      */
     private $createdAt;
 
@@ -51,6 +52,7 @@ class Share
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="shares")
+     * 
      */
     private $user;
 
