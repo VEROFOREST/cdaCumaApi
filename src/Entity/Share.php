@@ -5,10 +5,17 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ShareRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ShareRepository::class)
- * @ApiResource
+ * @ApiResource(collectionOperations={
+ *         "post",
+ *         "get"={
+ *             "normalization_context"={"groups"={"share:read"}}
+ *         }
+ *     }
+ * )
  */
 class Share
 {
@@ -16,21 +23,25 @@ class Share
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * 
      */
     private $id;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"share:read","user:read"})
      */
     private $quantity;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
+     * @Groups({"share:read","user:read"})
      */
     private $isResponsibleUser;
 
     /**
      * @ORM\Column(type="datetime_immutable")
+     * @Groups({"share:read","user:read"})
      */
     private $createdAt;
 
@@ -41,11 +52,13 @@ class Share
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="shares")
+     * 
      */
     private $user;
 
     /**
      * @ORM\ManyToOne(targetEntity=Equipment::class, inversedBy="shares")
+     * @Groups({"share:read"})
      */
     private $equipment;
 

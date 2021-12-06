@@ -7,30 +7,43 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
- * @ApiResource
+ * @ApiResource(collectionOperations={
+ *         "post",
+ *         "get"={
+ *             "normalization_context"={"groups"={"user:read"}}
+ *         }
+ *     }
+ * )
  */
+
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"user:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Groups({"user:read"})
+     *
      */
     private $email;
 
     /**
      * @ORM\Column(type="json")
+     * @Groups({"user:read"})
+     *
      */
     private $roles = [];
 
@@ -42,31 +55,41 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"user:read"})
+     *
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"user:read"})
+     *
      */
     private $lastName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"user:read"})
      */
     private $address;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"user:read"})
      */
     private $cp;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"user:read"})
+     *
      */
     private $city;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"user:read"})
+     *
      */
     private $phone;
 
@@ -82,11 +105,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\OneToMany(targetEntity=Reservation::class, mappedBy="user")
+     * @Groups({"user:read"})
      */
     private $reservations;
 
     /**
      * @ORM\OneToMany(targetEntity=Share::class, mappedBy="user")
+     * @Groups({"user:read"})
+     *
      */
     private $shares;
 
@@ -138,7 +164,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        // $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
     }
@@ -189,7 +215,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->firstName;
     }
-
+    /**
+     *@Groups({"user:read"})
+     * 
+     */
+   
     public function setFirstName(string $firstName): self
     {
         $this->firstName = $firstName;

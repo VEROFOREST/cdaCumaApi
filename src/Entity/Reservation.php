@@ -5,10 +5,17 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ReservationRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ReservationRepository::class)
- * @ApiResource
+ * @ApiResource(collectionOperations={
+ *         "post",
+ *         "get"={
+ *             "normalization_context"={"groups"={"reservation:read"}}
+ *         }
+ *     }
+ * )
  */
 class Reservation
 {
@@ -21,26 +28,32 @@ class Reservation
 
     /**
      * @ORM\Column(type="datetime")
+     * 
+     *  @Groups({"reservation:read","user:read"})
      */
     private $startDate;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"reservation:read","user:read"})
      */
     private $endDate;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
+     * @Groups({"reservation:read","user:read"})
      */
     private $isValidated;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
+     * @Groups({"reservation:read","user:read"})
      */
     private $isAvailable;
 
     /**
      * @ORM\Column(type="datetime_immutable")
+     * 
      */
     private $createdAt;
 
@@ -51,11 +64,13 @@ class Reservation
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="reservations")
+     * @Groups({"reservation:read"})
      */
     private $user;
 
     /**
      * @ORM\ManyToOne(targetEntity=Equipment::class, inversedBy="reservations")
+     *  @Groups({"reservation:read"})
      */
     private $equipment;
 
@@ -126,7 +141,7 @@ class Reservation
 
     public function getUpdatedAt(): ?\DateTimeImmutable
     {
-        return $this->updatedAt;
+        return $this-> updatedAt;
     }
 
     public function setUpdatedAt(?\DateTimeImmutable $updatedAt): self
