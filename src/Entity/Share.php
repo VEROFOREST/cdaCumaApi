@@ -12,7 +12,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ApiResource(collectionOperations={
  *         "post",
  *         "get"={
- *             "normalization_context"={"groups"={"share:read"}}
+ *             "normalization_context"={"groups"={"share_read"}}
  *         }
  *     }
  * )
@@ -29,19 +29,19 @@ class Share
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"share:read","user:read"})
+     * @Groups({"share_read"})
      */
     private $quantity;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
-     * @Groups({"share:read","user:read"})
+     * @Groups({"share_read"})
      */
     private $isResponsibleUser;
 
     /**
      * @ORM\Column(type="datetime_immutable")
-     * @Groups({"share:read","user:read"})
+     * @Groups({"share_read"})
      */
     private $createdAt;
 
@@ -52,13 +52,13 @@ class Share
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="shares")
-     * 
+     * @Groups({"share_read"})
      */
     private $user;
 
     /**
      * @ORM\ManyToOne(targetEntity=Equipment::class, inversedBy="shares")
-     * @Groups({"share:read"})
+     * @Groups({"share_read"})
      */
     private $equipment;
 

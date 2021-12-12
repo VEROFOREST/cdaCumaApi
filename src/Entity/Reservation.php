@@ -12,7 +12,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ApiResource(collectionOperations={
  *         "post",
  *         "get"={
- *             "normalization_context"={"groups"={"reservation:read"}}
+ *             "normalization_context"={"groups"={"reservation_read"}}
  *         }
  *     }
  * )
@@ -23,31 +23,31 @@ class Reservation
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"reservation_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="datetime")
-     * 
-     *  @Groups({"reservation:read","user:read"})
+     * @Groups({"reservation_read","user_read"})
      */
     private $startDate;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups({"reservation:read","user:read"})
+     * @Groups({"reservation_read","user_read"})
      */
     private $endDate;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
-     * @Groups({"reservation:read","user:read"})
+     * @Groups({"reservation_read"})
      */
     private $isValidated;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
-     * @Groups({"reservation:read","user:read"})
+     * @Groups({"reservation_read"})
      */
     private $isAvailable;
 
@@ -64,13 +64,13 @@ class Reservation
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="reservations")
-     * @Groups({"reservation:read"})
+     * @Groups({"reservation_read"})
      */
     private $user;
 
     /**
      * @ORM\ManyToOne(targetEntity=Equipment::class, inversedBy="reservations")
-     *  @Groups({"reservation:read"})
+     * @Groups({"reservation_read"})
      */
     private $equipment;
 
