@@ -17,7 +17,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
  * @ApiResource(collectionOperations={
  *         "post",
  *         "get"={
- *             "normalization_context"={"groups"={"user:read"}}
+ *             "normalization_context"={"groups"={"user_read"}}
  *         }
  *     }
  * )
@@ -29,20 +29,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"user:read"})
+     * @Groups({"user_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Groups({"user:read"})
+     * @Groups({"user_read"})
      *
      */
     private $email;
 
     /**
      * @ORM\Column(type="json")
-     * @Groups({"user:read"})
+     * @Groups({"user_read"})
      *
      */
     private $roles = [];
@@ -55,63 +55,64 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"user:read"})
+     * @Groups({"user_read","reservation_read"})
      *
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"user:read"})
+     * @Groups({"user_read","reservation_read"})
      *
      */
     private $lastName;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"user:read"})
+     * @Groups({"user_read"})
      */
     private $address;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"user:read"})
+     * @Groups({"user_read"})
      */
     private $cp;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"user:read"})
+     * @Groups({"user_read"})
      *
      */
     private $city;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"user:read"})
+     * @Groups({"user_read"})
      *
      */
     private $phone;
 
     /**
-     * @ORM\Column(type="datetime_immutable")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $createdAt;
 
     /**
-     * @ORM\Column(type="datetime_immutable", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $updatedAt;
 
     /**
      * @ORM\OneToMany(targetEntity=Reservation::class, mappedBy="user")
-     * @Groups({"user:read"})
+     * @Groups({"user_read"})
      */
+
     private $reservations;
 
     /**
      * @ORM\OneToMany(targetEntity=Share::class, mappedBy="user")
-     * @Groups({"user:read"})
+     * @Groups({"user_read"})
      *
      */
     private $shares;
@@ -216,7 +217,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->firstName;
     }
     /**
-     *@Groups({"user:read"})
+     *@Groups({"user_read"})
      * 
      */
    
@@ -234,7 +235,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setLastName(string $lastName): self
     {
-        $this->lastName = $lastName;
+        $this->lastName = strtoupper($lastName);
 
         return $this;
     }
@@ -270,7 +271,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setCity(string $city): self
     {
-        $this->city = $city;
+        $this->city = strtoupper($city);
 
         return $this;
     }
@@ -282,29 +283,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setPhone(string $phone): self
     {
-        $this->phone = $phone;
+        $this->phone = sprintf($phone);
 
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt()
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $createdAt): self
+    public function setCreatedAt( \DateTime $createdAt): self
     {
-        $this->createdAt = $createdAt;
+        $this->createdAt = $createdAt->format("d-m-Y h:i:s a");
 
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeImmutable
+    public function getUpdatedAt(): ?\DateTime
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(?\DateTimeImmutable $updatedAt): self
+    public function setUpdatedAt(?\DateTime $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
 
